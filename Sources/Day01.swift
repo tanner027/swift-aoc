@@ -3,6 +3,7 @@ import Foundation
 /*
  I found a bash solution as well:
  paste -d '-' <(cat Day01.txt | awk '{print $1}' | sort) <(cat Day01.txt | awk '{print $2}' | sort) | bc | awk '{sub("^-", "", $0); sum += $0}  END{print sum;}'
+ this probably would've been better as a single single 🤷
  */
 
 

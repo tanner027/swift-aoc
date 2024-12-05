@@ -9,10 +9,7 @@ import Testing
 
 @testable import AdventOfCode
 
-// Make a copy of this file for every day to ensure the provided smoke tests
-// pass.
 struct Day02Tests {
-  // Smoke test data provided in the challenge question
   let testData = """
     7 6 4 2 1
     1 2 7 8 9
