@@ -3,6 +3,18 @@ import Foundation
 
 struct Day04: AdventDay {
   
+  enum Day04Direction: String {
+    case n
+    case ne
+    case e
+    case se
+    case s
+    case sw
+    case w
+    case nw
+  }
+  
+  
   enum Xmas: String {
     case X
     case M
@@ -43,33 +55,33 @@ struct Day04: AdventDay {
       for column in 0..<wordSearchGRID[row].count {
         if wordSearchGRID[row][column] == .X {
           found += findXmas(column: column, row: row)
-          print("Found X at \((row,column)), found \(found)")
+          print("X found at \((row,column))")
         }
       }
     }
     return found
   }
   
-  func findXmas(column: Int, row: Int, current: Xmas = .X) -> Int {
+  func findXmas(column: Int, row: Int, current: Xmas = .X, currentDirection: Day04Direction? = nil) -> Int {
     guard let next = current.next() else { return 1 }
     
-    let coords: [(Int, Int)] = [
+    let coords: [(Int, Int, Day04Direction)] = [
       // top
-      (column, row + 1),
+      (column, row + 1, .n),
       // top left
-      (column - 1, row + 1),
+      (column - 1, row + 1, .nw),
       // top right
-      (column + 1, row + 1),
+      (column + 1, row + 1, .ne),
       // left
-      (column - 1, row),
+      (column - 1, row, .w),
       // right
-      (column + 1, row),
+      (column + 1, row, .e),
       // bottom
-      (column, row - 1),
+      (column, row - 1, .s),
       // bottom left
-      (column - 1, row - 1),
-      // bottom left
-      (column + 1, row - 1),
+      (column - 1, row - 1, .sw),
+      // bottom right
+      (column + 1, row - 1, .se),
     ]
     
     // NOTE: since the grid dimensions are the same we can use wordSearchGRID.count here
@@ -80,12 +92,12 @@ struct Day04: AdventDay {
     
     var found = 0
     for coord in validCoords {
-      if wordSearchGRID[coord.1][coord.0] == next {
-        print("found \(next) at \((coord.1, coord.0)): \(validCoords)")
-        found += findXmas(column: coord.0, row: coord.1, current: next)
+      let direction = coord.2
+      let previousDirection = currentDirection ?? direction
+      if wordSearchGRID[coord.1][coord.0] == next && direction == previousDirection {
+        found += findXmas(column: coord.0, row: coord.1, current: next, currentDirection: direction)
       }
     }
-    print("found \(found) on the way back from \(current)")
     return found
   }
   
